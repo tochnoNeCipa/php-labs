@@ -107,3 +107,5 @@ form {
   color: #2A4F6F;
   background-color: transparent;
 }
+/* Логотип без отсутствующего logo.gif */
+.logo-text { display:inline-block; padding: 5px 14px; font-size: 22px; font-weight: bold; color: #375e85; }

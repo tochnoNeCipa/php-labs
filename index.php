@@ -1,119 +1,77 @@
 <?php
+require_once __DIR__ . '/inc/lib.inc.php';
+require_once __DIR__ . '/inc/data.inc.php';
 
-$day = date('d');
-$year = date('Y');
-
-$months = [
-    1 => "январь",
-    2 => "февраль",
-    3 => "март",
-    4 => "апрель",
-    5 => "май",
-    6 => "июнь",
-    7 => "июль",
-    8 => "август",
-    9 => "сентябрь",
-    10 => "октябрь",
-    11 => "ноябрь",
-    12 => "декабрь"
-];
-
-$mon = $months[date('n')];
-
-$hour = (int) date('H');
-
-$welcome = '';
-
-if ($hour >= 0 && $hour < 6) {
-    $welcome = 'Доброй ночи';
-} elseif ($hour >= 6 && $hour < 12) {
-    $welcome = 'Доброе утро';
-} elseif ($hour >= 12 && $hour < 18) {
-    $welcome = 'Добрый день';
-} elseif ($hour >= 18 && $hour <= 23) {
-    $welcome = 'Добрый вечер';
-} else {
-    $welcome = 'Доброй ночи';
-}
-
-$leftMenu = [
-    ['link' => 'Домой', 'href' => 'index.php'],
-    ['link' => 'О нас', 'href' => 'about.php'],
-    ['link' => 'Контакты', 'href' => 'contact.php'],
-    ['link' => 'Таблица умножения', 'href' => 'table.php'],
-    ['link' => 'Калькулятор', 'href' => 'calc.php']
-];
-function drawMenu($menu, $vertical = true) {
-    if ($vertical) {
-        echo '<ul>';
-    } else {
-        echo '<ul style="display: flex; gap: 20px; list-style: none;">';
-    }
-
-    foreach ($menu as $item) {
-        echo '<li><a href="' . $item['href'] . '">'
-            . $item['link'] . '</a></li>';
-    }
-
-    echo '</ul>';
+// Инициализация заголовков страницы
+$title = 'Сайт нашей школы';
+$header = "$welcome, Гость!";
+$id = strtolower(strip_tags(trim((string)($_GET['id'] ?? ''))));
+switch ($id) {
+    case 'about':
+        $title = 'О сайте';
+        $header = 'О нашем сайте';
+        break;
+    case 'contact':
+        $title = 'Контакты';
+        $header = 'Обратная связь';
+        break;
+    case 'table':
+        $title = 'Таблица умножения';
+        $header = 'Таблица умножения';
+        break;
+    case 'calc':
+        $title = 'Он-лайн калькулятор';
+        $header = 'Калькулятор';
+        break;
 }
 ?>
 <!DOCTYPE html>
-<html>
-
+<html lang="ru">
 <head>
-  <title>Сайт нашей школы</title>
-  <meta charset="utf-8" />
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="utf-8" />
+    <title><?= htmlspecialchars($title, ENT_QUOTES, 'UTF-8') ?></title>
+    <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-
-  <div id="header">
-    <!-- Верхняя часть страницы -->
-    <img src="logo.gif" width="187" height="29" alt="Наш логотип" class="logo" />
-    <span class="slogan">приходите к нам учиться</span>
-    <!-- Верхняя часть страницы -->
-  </div>
-
-  <div id="content">
-    <!-- Заголовок -->
-    <h1><?= $welcome ?>, Гость!</h1>
-    <!-- Заголовок -->
-    <!-- Область основного контента -->
-    <blockquote>
+    <div id="header">
+        <!-- Верхняя часть страницы -->
+        <?php include __DIR__ . '/inc/top.inc.php'; ?>
+        <!-- Верхняя часть страницы -->
+    </div>
+    <div id="content">
+        <!-- Заголовок -->
+        <h1><?= htmlspecialchars($header, ENT_QUOTES, 'UTF-8') ?></h1>
+        <!-- Заголовок -->
+        <!-- Область основного контента -->
         <?php
-        echo 'Сегодня ', $day, ' число, ', $mon, ' месяц, ', $year, ' год.';
+        switch ($id) {
+            case 'about':
+                include __DIR__ . '/about.php';
+                break;
+            case 'contact':
+                include __DIR__ . '/contact.php';
+                break;
+            case 'table':
+                include __DIR__ . '/table.php';
+                break;
+            case 'calc':
+                include __DIR__ . '/calc.php';
+                break;
+            default:
+                include __DIR__ . '/inc/index.inc.php';
+        }
         ?>
-    </blockquote>
-    <h3>Зачем мы ходим в школу?</h3>
-    <p>
-      У нас каждую минуту что-то происходит и кипит жизнь. Проходят уроки и шумят перемены, кто-то отвечает у доски, кто-то отчаянно зубрит перед контрольной пройденный материал, кому-то ставят «пятерку» за сочинение, кого-то ругают за непрочитанную книгу, на школьной спортивной площадке ребята играют в футбол, а девочки – в волейбол, некоторые готовятся к соревнованиям, другие участвуют в репетициях праздников…
-    </p>
-    <h3>Что такое ЕГЭ?</h3>
-    <p>
-      Аббревиатура ЕГЭ расшифровывается как "Единый Государственный Экзамен". Почему "единый"? ЕГЭ одновременно является и вступительным экзаменом в ВУЗ и итоговой оценкой каждого выпускника школы. К тому же на всей территории России используются однотипные задания и единая система оценки.
-    </p>
-    <p>
-      Результаты ЕГЭ оцениваются по 100-балльной и пятибалльной системам и заносятся в свидетельство о результатах единого государственного экзамена. Срок действия данного документа истекает 31 декабря года, следующего за годом его выдачи, поэтому у абитуриентов есть возможность поступать в ВУЗы со свидетельством ЕГЭ в течение двух лет.
-    </p>
-    <!-- Область основного контента -->
-  </div>
-  <div id="nav">
-    <!-- Навигация -->
-    <h2>Навигация по сайту</h2>
-    <!-- Меню -->
-    <?php
-    drawMenu($leftMenu);
-    ?>
-    <!-- Меню -->
-    <!-- Навигация -->
-  </div>
-  <div id="footer">
-    <!-- Нижняя часть страницы -->
-    &copy; Супер Мега Веб-мастер, 2000 &ndash; <?= $year ?>
-    <!-- Нижняя часть страницы -->
-  </div>
+        <!-- Область основного контента -->
+    </div>
+    <div id="nav">
+        <!-- Навигация -->
+        <?php include __DIR__ . '/inc/menu.inc.php'; ?>
+        <!-- Навигация -->
+    </div>
+    <div id="footer">
+        <!-- Нижняя часть страницы -->
+        <?php include __DIR__ . '/inc/bottom.inc.php'; ?>
+        <!-- Нижняя часть страницы -->
+    </div>
 </body>
-
 </html>

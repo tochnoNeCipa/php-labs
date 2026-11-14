@@ -1,98 +1,34 @@
 <?php
+if (!function_exists('drawTable')) {
+    require_once __DIR__ . '/inc/lib.inc.php';
+}
 $cols = 10;
 $rows = 10;
-
-function drawTable($cols, $rows, $color) {
-    echo '<table border="1" cellpadding="10" cellspacing="0">';
-
-    for ($i = 1; $i <= $rows; $i++) {
-        echo '<tr>';
-
-        for ($j = 1; $j <= $cols; $j++) {
-
-            if ($i == 1 || $j == 1) {
-                echo '<th style="background-color: ' . $color . '; text-align: center;">'
-                    . ($i * $j) . '</th>';
-            } else {
-                echo '<td>' . ($i * $j) . '</td>';
-            }
-
-        }
-
-        echo '</tr>';
-    }
-
-    echo '</table>';
+$color = 'yellow';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $cols = abs((int)($_POST['cols'] ?? 10));
+    $rows = abs((int)($_POST['rows'] ?? 10));
+    $color = trim(strip_tags((string)($_POST['color'] ?? 'yellow')));
+}
+$cols = $cols ?: 10;
+$rows = $rows ?: 10;
+$color = $color ?: 'yellow';
+$cols = min($cols, 10);
+$rows = min($rows, 10);
+// Разрешаем безопасные имена цветов и шестнадцатеричные CSS-цвета
+if (!preg_match('/^(?:[a-zA-Z]{3,20}|#[0-9a-fA-F]{3}|#[0-9a-fA-F]{6})$/', $color)) {
+    $color = 'yellow';
 }
 ?>
-<!DOCTYPE html>
-<html>
-
-<head>
-  <title>Таблица умножения</title>
-  <meta charset="utf-8" />
-  <link rel="stylesheet" href="style.css" />
-</head>
-
-<body>
-
-  <div id="header">
-    <!-- Верхняя часть страницы -->
-    <img src="logo.gif" width="187" height="29" alt="Наш логотип" class="logo" />
-    <span class="slogan">приходите к нам учиться</span>
-    <!-- Верхняя часть страницы -->
-  </div>
-
-  <div id="content">
-    <!-- Заголовок -->
-    <h1>Таблица умножения</h1>
-    <!-- Заголовок -->
-    <!-- Область основного контента -->
-    <form action=''>
-      <label>Количество колонок: </label>
-      <br />
-      <input name='cols' type='text' value="" />
-      <br />
-      <label>Количество строк: </label>
-      <br />
-      <input name='rows' type='text' value="" />
-      <br />
-      <label>Цвет: </label>
-      <br />
-      <input name='color' type='text' value="" />
-      <br />
-      <br />
-      <input type='submit' value='Создать' />
-    </form>
-    <!-- Таблица -->
-    <?php
-    drawTable($cols, $rows, 'lightblue');
-    ?>
-    <!-- Таблица -->
-    <!-- Область основного контента -->
-  </div>
-  <div id="nav">
-    <h2>Навигация по сайту</h2>
-    <!-- Меню -->
-    <ul>
-      <li><a href='index.php'>Домой</a>
-      </li>
-      <li><a href='about.php'>О нас</a>
-      </li>
-      <li><a href='contact.php'>Контакты</a>
-      </li>
-      <li><a href='table.php'>Таблица умножения</a>
-      </li>
-      <li><a href='calc.php'>Калькулятор</a>
-      </li>
-    </ul>
-    <!-- Меню -->
-  </div>
-  <div id="footer">
-    <!-- Нижняя часть страницы -->
-    &copy; Супер Мега Веб-мастер, 2000 &ndash; 2021
-    <!-- Нижняя часть страницы -->
-  </div>
-</body>
-
-</html>
+<form action="<?= htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8') ?>" method="POST">
+    <label>Количество колонок:</label><br />
+    <input name="cols" type="number" min="1" max="10" value="<?= $cols ?>" /><br />
+    <label>Количество строк:</label><br />
+    <input name="rows" type="number" min="1" max="10" value="<?= $rows ?>" /><br />
+    <label>Цвет:</label><br />
+    <input name="color" type="text" value="<?= htmlspecialchars($color, ENT_QUOTES, 'UTF-8') ?>" /><br /><br />
+    <input type="submit" value="Создать" />
+</form>
+<!-- Таблица -->
+<?php drawTable($cols, $rows, $color); ?>
+<!-- Таблица -->
