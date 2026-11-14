@@ -15,7 +15,7 @@ $rows = $rows ?: 10;
 $color = $color ?: 'yellow';
 $cols = min($cols, 10);
 $rows = min($rows, 10);
-// Разрешаем безопасные имена цветов и шестнадцатеричные CSS-цвета
+
 if (!preg_match('/^(?:[a-zA-Z]{3,20}|#[0-9a-fA-F]{3}|#[0-9a-fA-F]{6})$/', $color)) {
     $color = 'yellow';
 }
