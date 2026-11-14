@@ -35,6 +35,14 @@ if ($hour >= 0 && $hour < 6) {
 } else {
     $welcome = 'Доброй ночи';
 }
+
+$leftMenu = [
+    ['link' => 'Домой', 'href' => 'index.php'],
+    ['link' => 'О нас', 'href' => 'about.php'],
+    ['link' => 'Контакты', 'href' => 'contact.php'],
+    ['link' => 'Таблица умножения', 'href' => 'table.php'],
+    ['link' => 'Калькулятор', 'href' => 'calc.php']
+];
 ?>
 <!DOCTYPE html>
 <html>
@@ -82,16 +90,11 @@ if ($hour >= 0 && $hour < 6) {
     <h2>Навигация по сайту</h2>
     <!-- Меню -->
     <ul>
-      <li><a href='index.php'>Домой</a>
-      </li>
-      <li><a href='about.php'>О нас</a>
-      </li>
-      <li><a href='contact.php'>Контакты</a>
-      </li>
-      <li><a href='table.php'>Таблица умножения</a>
-      </li>
-      <li><a href='calc.php'>Калькулятор</a>
-      </li>
+        <?php
+        foreach ($leftMenu as $item) {
+            echo '<li><a href="' . $item['href'] . '">' . $item['link'] . '</a></li>';
+        }
+        ?>
     </ul>
     <!-- Меню -->
     <!-- Навигация -->
