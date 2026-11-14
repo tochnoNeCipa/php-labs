@@ -1,3 +1,30 @@
+<?php
+$cols = 10;
+$rows = 10;
+
+function drawTable($cols, $rows, $color) {
+    echo '<table border="1" cellpadding="10" cellspacing="0">';
+
+    for ($i = 1; $i <= $rows; $i++) {
+        echo '<tr>';
+
+        for ($j = 1; $j <= $cols; $j++) {
+
+            if ($i == 1 || $j == 1) {
+                echo '<th style="background-color: ' . $color . '; text-align: center;">'
+                    . ($i * $j) . '</th>';
+            } else {
+                echo '<td>' . ($i * $j) . '</td>';
+            }
+
+        }
+
+        echo '</tr>';
+    }
+
+    echo '</table>';
+}
+?>
 <!DOCTYPE html>
 <html>
 
@@ -38,43 +65,9 @@
       <input type='submit' value='Создать' />
     </form>
     <!-- Таблица -->
-    <table border='1' width="200">
-      <tr>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
-        <td>4</td>
-        <td>5</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>4</td>
-        <td>6</td>
-        <td>8</td>
-        <td>10</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>6</td>
-        <td>9</td>
-        <td>12</td>
-        <td>15</td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td>8</td>
-        <td>12</td>
-        <td>16</td>
-        <td>10</td>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td>10</td>
-        <td>15</td>
-        <td>20</td>
-        <td>25</td>
-      </tr>
-    </table>
+    <?php
+    drawTable($cols, $rows, 'lightblue');
+    ?>
     <!-- Таблица -->
     <!-- Область основного контента -->
   </div>
